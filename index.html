@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8">
+	<title>probando onkeyup</title>
+	<script src="jquery-1.12.3.min.js"></script>
+	</head>
+	<body>
+<!-- Calcula letra DNI -->
+		<h1>Calcula letra DNI</h1>
+		<form>
+		    Calcula letra DNI<input id="dni" type="text" maxlength="10">
+		</form>
+		<div id="example">
+		</div>
+
+		<br><br><br><br>
+<!-- Calcula provincia -->
+		<h1>Calcula provincia desde CP</h1>
+		CP<input type="text" id="cp" maxlength="5"><br />
+		Provincia<input type="text" id="provincia" readonly>
+		<br><br><br><br>
+<!-- Calcula edad -->
+		<h1>Calcula edad desde fecha nacimiento</h1>
+		Fecha nacimiento<input type="date" id="fechanacimiento"><br />
+		Edad<input type="text" id="edad" readonly>
+		<br><br><br><br>
+<!-- Paginacion -->
+		<h1>Muestra diferentes "pags" del form en jquery</h1>
+		<input type="hidden" id="contador" value=''><br>
+		<div id="example2">
+		</div>
+		<div id="contenedor1">C1</div>
+		<div id="contenedor2">C2</div>
+		<div id="contenedor3">C3</div>
+		<div id="contenedor4">C4</div>
+		<a id="leftarrow" href="#"><-</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="rightarrow" href="#">-></a>
+
+		<script>
+			
+			$( document ).ready(function() {
+/* ################################################################################# */
+/* ############################### Calcula letra DNI ############################### */ //input id="dni" y maxlength="10"
+/* ################################################################################# */ // div#example para mostrar ayudas
+  				$( "#dni" ).keyup(function() {
+  					var ncadena = $('#dni').val().length;
+						if(ncadena == 8){
+							var cadena = $('#dni').val();
+							var resto = ((cadena/23)-Math.floor(cadena/23))*23
+							var redondo = Math.round(resto);
+								switch(redondo){case 0:var letra="T";break;case 1:var letra="R";break;case 2:var letra="W";break;case 3:var letra="A";break;case 4:var letra="G";break;case 5:var letra="M";break;case 6:var letra="Y";break;case 7:var letra="F";break;case 8:var letra="P";break;case 9:var letra="D";break;case 10:var letra="X";break;case 11:var letra="B";break;case 12:var letra="N";break;case 13:var letra="J";break;case 14:var letra="Z";break;case 15:var letra="S";break;case 16:var letra="Q";break;case 17:var letra="V";break;case 18:var letra="H";break;case 19:var letra="L";break;case 20:var letra="C";break;case 21:var letra="K";break;case 22:var letra="E"}
+								$("#dni").val(cadena + "-" +letra);
+								$("#dni").css("background-color", "#DFD");
+						}
+						else{
+							if(ncadena == 0){
+								$("#dni").css("background-color", "#FFF");
+							}
+							else{
+								$("#dni").css("background-color", "#FDD");
+							}
+						}
+				});
+/* ################################################################################# */
+/* ############################### </ letra DNI > ################################## */
+/* ################################################################################# */
+
+/* ################################################################################# */
+/* ############################### Provincia desde CP ############################## */
+/* ################################################################################# */
+				$( "#cp" ).keyup(function() { /*cambio en un select es .change*/
+					var provincias = ["-Provincia-", "Alava", "Albacete", "Alicante", "Almer\u00EDa", "\u00C1vila", "Badajoz", "Baleares", "Barcelona", "Burgos", "C\u00E1ceres", "C\u00E1diz", "Castell\u00F3n de la Plana", "Ciudad Real", "C\u00F3rdoba", "A Coru\u00F1a", "Cuenca", "Girona", "Granada", "Guadalajara", "Guipuzcoa", "Huelva", "Huesca", "Ja\u00E9n", "Le\u00F3n", "Lleida", "La Rioja", "Lugo", "Madrid", "M\u00E1laga", "Murcia", "Navarra", "Ourense", "Asturias", "Palencia", "Las Palmas", "Pontevedra", "Salamanca", "S.C.Tenerife", "Cantabria", "Segovia", "Sevilla", "Soria", "Tarragona", "Teruel", "Toledo", "Valencia", "Valladolid", "Vizcaya", "Zamora", "Zaragoza", "Ceuta", "Melilla"];
+						var ncadena = $('#cp').val().length;
+						if (ncadena == 5) {
+							var value = $('#cp').val();	
+							value = value.substr(0, 2);
+							if (value <10) {value = value.substr(1, 2);}
+
+							$("#provincia").val(provincias[value]);
+							$("#cp").css("background-color", "#DFD");
+						}
+						else{
+							$("#provincia").val('');
+							if(ncadena == 0){
+								$("#cp").css("background-color", "#FFF");
+							}
+							else{
+								$("#cp").css("background-color", "#FDD");
+							}
+						}
+				});
+/* ################################################################################# */
+/* ############################### </ Provincia desde CP> ########################## */
+/* ################################################################################# */
+
+/* ################################################################################# */
+/* ############################ <Resta anios calcula edad> ######################### */
+/* ################################################################################# */
+				$( "#fechanacimiento" ).blur(function() {
+					value=$("#fechanacimiento").val();
+					var bornyear = value.substr(0,4);
+					var bornmonth = value.substr(5,2);
+					var bornday = value.substr(8,2);
+					var total = bornyear + '' + bornmonth + '' + bornday;
+					function ceros(dato){if(dato < 10) {dato = '0'+dato;return dato;}else{return dato;}}
+					var fecha = new Date();
+					var today = ceros(fecha.getDate());
+					var tomonth = ceros(fecha.getMonth()+1);
+					var toyear = fecha.getFullYear();
+					var restaanios = toyear - bornyear;
+					var restameses = tomonth - bornmonth;
+					var restadias = today - bornday;
+					if (restameses < 0) {restaanios = restaanios-1;}
+					if (restameses > 0) {}
+					if (restameses == 0) {
+						if (restadias < 0) {restaanios = restaanios-1;}
+						if (restadias > 0) {}
+						if (restadias == 0) {}
+					}
+					$("#edad").val(restaanios);
+				});
+/* ################################################################################# */
+/* ############################ < /Resta anios calcula edad> ####################### */
+/* ################################################################################# */
+
+/* ################################################################################# */
+/* ################################ <Paginación> ################################### */
+/* ################################################################################# */
+				$("#contenedor1").css("display", "block");
+				$("#contenedor2").css("display", "none");
+				$("#contenedor3").css("display", "none");
+				$("#contenedor4").css("display", "none");
+				i = 1;
+				$( "#rightarrow" ).click(function() {
+					if(i <= 3 && i >=1){
+						i = i+1;
+						var u = i-1;
+						$("#contenedor"+i).css("display", "block");
+						$("#contenedor"+u).css("display", "none");
+					}
+				});
+				$( "#leftarrow" ).click(function() {
+					if(i <= 4 && i >=2){
+						i = i-1;
+						var u = i+1;
+						$("#contenedor"+i).css("display", "block");
+						$("#contenedor"+u).css("display", "none");
+					}
+				});
+/* ################################################################################# */
+/* ############################### < /Paginación> ################################## */
+/* ################################################################################# */
+			});
+		</script>
+	</body>
+</html>
